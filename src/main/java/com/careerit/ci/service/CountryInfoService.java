@@ -121,4 +121,8 @@ public class CountryInfoService {
     public List<RegionStatsDto> getRegionStats() {
       return countryInfoRepo.findRegionStats();
     }
+
+    public List<RegionStatsDto> getRegionStats(String region) {
+        return countryInfoRepo.findRegionStats(region);
+    }
 }

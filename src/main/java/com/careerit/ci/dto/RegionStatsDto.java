@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class RegionStatsDto {
     private String regionName;
     private long totalPopulation;
+    private double totalArea;
+    private double maxPopulation;
+    private double minPopulation;
 }
