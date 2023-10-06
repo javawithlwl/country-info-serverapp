@@ -2,6 +2,7 @@ package com.careerit.ci.service;
 
 import com.careerit.ci.domain.CountryInfo;
 import com.careerit.ci.dto.CountryInfoDto;
+import com.careerit.ci.dto.RegionStatsDto;
 import com.careerit.ci.repo.CountryInfoRepo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ public class CountryInfoService {
     @Autowired
     private CountryInfoRepo countryInfoRepo;
 
-    public List<CountryInfoDto> getCountryInfoDetails(){
+    public List<CountryInfoDto> getCountryInfoDetails() {
         List<CountryInfo> list = countryInfoRepo.findAll();
         ObjectMapper objectMapper = new ObjectMapper();
         List<CountryInfoDto> countryInfoDtoList = objectMapper.convertValue(list, new TypeReference<List<CountryInfoDto>>() {
@@ -31,6 +32,7 @@ public class CountryInfoService {
         log.info("Total countries found :{}", countryInfoDtoList.size());
         return countryInfoDtoList;
     }
+
     public List<CountryInfoDto> loadCountryInfo() {
         List<CountryInfoDto> list = getAllCountries();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -90,16 +92,33 @@ public class CountryInfoService {
         return countryInfoDtoList;
     }
 
-    public List<CountryInfoDto> search(String str){
-        if(str==null || str.isEmpty()){
-           return getCountryInfoDetails();
-        }else{
+    public List<CountryInfoDto> search(String str) {
+        if (str == null || str.isEmpty()) {
+            return getCountryInfoDetails();
+        } else {
             List<CountryInfo> searchResult = countryInfoRepo.findByCountryNameContainingIgnoreCase(str);
             ObjectMapper objectMapper = new ObjectMapper();
             List<CountryInfoDto> countryInfoDtoList = objectMapper.convertValue(searchResult, new TypeReference<List<CountryInfoDto>>() {
             });
-            log.info("For search string {}, total countries found :{}",str, countryInfoDtoList.size());
+            log.info("For search string {}, total countries found :{}", str, countryInfoDtoList.size());
             return countryInfoDtoList;
         }
+    }
+
+    public List<String> getRegions() {
+        return countryInfoRepo.findDistinctRegions();
+    }
+
+    public List<CountryInfoDto> getTop5PopulatedCountries() {
+        List<CountryInfo> list = countryInfoRepo.findTop5PopulatedCountries();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<CountryInfoDto> countryInfoDtoList = objectMapper.convertValue(list, new TypeReference<List<CountryInfoDto>>() {
+        });
+        log.info("Total countries found :{}", countryInfoDtoList.size());
+        return countryInfoDtoList;
+    }
+
+    public List<RegionStatsDto> getRegionStats() {
+      return countryInfoRepo.findRegionStats();
     }
 }

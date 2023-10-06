@@ -1,6 +1,7 @@
 package com.careerit.ci.api;
 
 import com.careerit.ci.dto.CountryInfoDto;
+import com.careerit.ci.dto.RegionStatsDto;
 import com.careerit.ci.service.CountryInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,18 @@ public class CountryInfoController {
     public ResponseEntity<List<CountryInfoDto>> search(@RequestParam("str")String str) {
         return ResponseEntity.ok(countryInfoService.search(str));
     }
+    @GetMapping("/regions")
+    public ResponseEntity<List<String>> getRegions(){
+        return ResponseEntity.ok(countryInfoService.getRegions());
+    }
 
+    @GetMapping("/top5populated")
+    public ResponseEntity<List<CountryInfoDto>> getTop5PopulatedCountries(){
+        return ResponseEntity.ok(countryInfoService.getTop5PopulatedCountries());
+    }
+    @GetMapping("/regionstats")
+    public ResponseEntity<List<RegionStatsDto>> getRegionStats(){
+        return ResponseEntity.ok(countryInfoService.getRegionStats());
+    }
 
 }
